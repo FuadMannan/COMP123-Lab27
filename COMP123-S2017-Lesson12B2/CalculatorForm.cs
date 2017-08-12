@@ -217,7 +217,7 @@ namespace COMP123_S2017_Lesson12B2
         private void _showResult(double operand)
         {
             this._calculate(operand, this.CurrentOperator);
-            ResultTextBox.Text = this.Result.ToString();
+            ResultTextBox.Text = (this.Result.ToString() == "Infinity") ? "Undefined" : this.Result.ToString();
 
         }
 
@@ -244,8 +244,8 @@ namespace COMP123_S2017_Lesson12B2
                         this.Result = this.OperandList[0] * this.OperandList[1];
                         break;
                     case "÷":
-                        this.Result = this.OperandList[0] / this.OperandList[1];
-                        break;
+                            this.Result = this.OperandList[0] / this.OperandList[1];
+                            break;
                 }
                 this.OperandList.Clear();
                 this.OperandList.Add(this.Result);
