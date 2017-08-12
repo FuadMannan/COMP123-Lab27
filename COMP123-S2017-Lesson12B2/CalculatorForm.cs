@@ -11,9 +11,10 @@ using System.Windows.Forms;
 
 /*
  * Name: Fuad Mannan
+ * ID: 300923068
  * Date: August 11, 2017
  * Description: Calculator Demo Project
- * Version: 1.3 - Added multiplication and division to _calculate method.
+ * Version: 1.4 - Added functionality for "Del" key
  */
 
 namespace COMP123_S2017_Lesson12B2
@@ -195,7 +196,9 @@ namespace COMP123_S2017_Lesson12B2
                 case "=":
                     this._showResult(operand);
                     break;
-                case "⌫":
+                case "Del":
+                    //If result textbox length is only one, set to 0; otherwise delete last character from string
+                    ResultTextBox.Text = (ResultTextBox.Text.Length==1) ? "0" : ResultTextBox.Text.Substring(0, ResultTextBox.Text.Length - 1);
                     break;
                 case "±":
                     break;
