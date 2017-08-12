@@ -14,7 +14,7 @@ using System.Windows.Forms;
  * ID: 300923068
  * Date: August 11, 2017
  * Description: Calculator Demo Project
- * Version: 1.4 - Added functionality for "Del" key
+ * Version: 1.5 - Updated dividing by 0, and deleting when result is "Undefined"
  */
 
 namespace COMP123_S2017_Lesson12B2
@@ -33,7 +33,8 @@ namespace COMP123_S2017_Lesson12B2
         private bool _isOperandTwo;
 
         // PUBLIC PROPERTIES
-        public bool IsDecimalClicked {
+        public bool IsDecimalClicked
+        {
 
             get
             {
@@ -47,7 +48,8 @@ namespace COMP123_S2017_Lesson12B2
 
         }
 
-        public string CurrentOperator {
+        public string CurrentOperator
+        {
 
             get
             {
@@ -59,9 +61,10 @@ namespace COMP123_S2017_Lesson12B2
                 this._currentOperator = value;
             }
 
-                }
+        }
 
-        public List<double> OperandList {
+        public List<double> OperandList
+        {
 
             get
             {
@@ -73,9 +76,10 @@ namespace COMP123_S2017_Lesson12B2
                 this._operandList = value;
             }
 
-           }
+        }
 
-        public double Result {
+        public double Result
+        {
 
             get
             {
@@ -133,9 +137,9 @@ namespace COMP123_S2017_Lesson12B2
         {
             Button calculatorButton = sender as Button; // downcasting
 
-            if((this.IsDecimalClicked) && (calculatorButton.Text == "."))
+            if ((this.IsDecimalClicked) && (calculatorButton.Text == "."))
             {
-                    return;
+                return;
             }
 
             if (calculatorButton.Text == ".")
@@ -157,7 +161,7 @@ namespace COMP123_S2017_Lesson12B2
             }
             else
             {
-                if((OperandList.Count > 0) && (this._isOperandTwo == false))
+                if ((OperandList.Count > 0) && (this._isOperandTwo == false))
                 {
 
                     ResultTextBox.Text = calculatorButton.Text;
@@ -197,17 +201,23 @@ namespace COMP123_S2017_Lesson12B2
                     this._showResult(operand);
                     break;
                 case "Del":
-                    //If result textbox length is only one, set to 0; otherwise delete last character from string
-                    ResultTextBox.Text = (ResultTextBox.Text.Length==1) ? "0" : ResultTextBox.Text.Substring(0, ResultTextBox.Text.Length - 1);
-                    break;
+                    if (ResultTextBox.Text == "Undefined")
+                    {
+                        ResultTextBox.Text = "0";
+                        break;
+                    }
+                    else
+                    {
+                        //If result textbox length is only one, set to 0; otherwise delete last character from string
+                        ResultTextBox.Text = (ResultTextBox.Text.Length == 1) ? "0" : ResultTextBox.Text.Substring(0, ResultTextBox.Text.Length - 1);
+                        break;
+                    }
                 case "±":
                     break;
                 default:
                     this._calculate(operand, operatorButton.Text);
                     break;
             }
-
-
         }
 
         /// <summary>
@@ -217,6 +227,7 @@ namespace COMP123_S2017_Lesson12B2
         private void _showResult(double operand)
         {
             this._calculate(operand, this.CurrentOperator);
+            //If divided by 0, show "Undefined" for result
             ResultTextBox.Text = (this.Result.ToString() == "Infinity") ? "Undefined" : this.Result.ToString();
 
         }
@@ -230,7 +241,7 @@ namespace COMP123_S2017_Lesson12B2
         {
 
             OperandList.Add(operand);
-            if(OperandList.Count > 1)
+            if (OperandList.Count > 1)
             {
                 switch (operatorString)
                 {
@@ -244,8 +255,8 @@ namespace COMP123_S2017_Lesson12B2
                         this.Result = this.OperandList[0] * this.OperandList[1];
                         break;
                     case "÷":
-                            this.Result = this.OperandList[0] / this.OperandList[1];
-                            break;
+                        this.Result = this.OperandList[0] / this.OperandList[1];
+                        break;
                 }
                 this.OperandList.Clear();
                 this.OperandList.Add(this.Result);
